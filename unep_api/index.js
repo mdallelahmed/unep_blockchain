@@ -1,10 +1,21 @@
+/*
+***********************************************************************************************************
+***********************************************************************************************************
+***************************************$UNEP REST API$*************************************************
+********************************************$2019$************************************************************
+****************************************$MDALEL$$$AHMED$$*******************************************************
+********************************************$ISEP$************************************************************
+*******************************$©©©$AHMED.MDALLEL@ESPRIT.TN$©©©$**********************************************
+***********************************************************************************************************
+***********************************************************************************************************
+*/
 const mysql = require('mysql');
 const express = require('express');
 var app = express();
 const bodyparser = require('body-parser');
 
 app.use(bodyparser.json());
-
+//changer votre config
 var mysqlConnection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -64,9 +75,9 @@ app.delete('/AirDevice/:id', (req, res) => {
 //Insert an device
 app.post('/AirDevice', (req, res) => {
     let device = req.body;
-    var sql = "INSERT INTO AirDevice (country,state,number,date) VALUES (?,?,?,?)"; 
+    var sql = "INSERT INTO AirDevice (country,state,date,Latitude,Longitude,status) VALUES (?,?,?,?,?,?)"; 
     
-    mysqlConnection.query(sql, [device.country, device.state, device.number,device.date], (err, rows, fields) => {
+    mysqlConnection.query(sql, [device.country, device.state,device.date,device.latitude,device.longitude,device.status], (err, rows, fields) => {
         if (!err)
         mysqlConnection.query('SELECT * FROM AirDevice', (err, rows, fields) => {
             if (!err)
@@ -82,9 +93,9 @@ app.post('/AirDevice', (req, res) => {
 //Update an device
 app.put('/AirDevice/:id', (req, res) => {
     let device = req.body;
-    var sql = "UPDATE AirDevice SET country = ?,state = ?,number = ?,date = ? WHERE id_device = ?"; 
+    var sql = "UPDATE AirDevice SET country = ?,state = ?,date = ?, Latitude = ? , Longitude = ? , status = ? WHERE id_device = ?"; 
 
-    mysqlConnection.query(sql, [device.country, device.state, device.number,device.date,req.params.id], (err, rows, fields) => {
+    mysqlConnection.query(sql, [device.country, device.state,device.date,device.latitude,device.longitude,device.status,req.params.id], (err, rows, fields) => {
         if (!err)
             res.send('Updated successfully');
         else
@@ -198,9 +209,9 @@ app.delete('/user/:id', (req, res) => {
 //Insert an user
 app.post('/user', (req, res) => {
     let user = req.body;
-    var sql = "INSERT INTO user (frist_name,last_name,email,password) VALUES (?,?,?,?)"; 
+    var sql = "INSERT INTO user (first_name,last_name,email,password) VALUES (?,?,?,?)"; 
     
-    mysqlConnection.query(sql, [user.frist_name, user.last_name, user.email,user.password], (err, rows, fields) => {
+    mysqlConnection.query(sql, [user.first_name, user.last_name, user.email,user.password], (err, rows, fields) => {
         if (!err)
         mysqlConnection.query('SELECT * FROM user', (err, rows, fields) => {
             if (!err)
@@ -216,9 +227,9 @@ app.post('/user', (req, res) => {
 //Update an user
 app.put('/user/:id', (req, res) => {
     let user = req.body;
-    var sql = "UPDATE user SET frist_name = ?,last_name = ?,email = ?,password = ? WHERE user_id = ?"; 
+    var sql = "UPDATE user SET first_name = ?,last_name = ?,email = ?,password = ? WHERE user_id = ?"; 
 
-    mysqlConnection.query(sql, [user.frist_name, user.last_name, user.email,user.password,req.params.id], (err, rows, fields) => {
+    mysqlConnection.query(sql, [user.first_name, user.last_name, user.email,user.password,req.params.id], (err, rows, fields) => {
         if (!err)
             res.send('Updated successfully');
         else
@@ -270,3 +281,5 @@ app.post('/block', (req, res) => {
             console.log(err);
     })
 });
+
+
